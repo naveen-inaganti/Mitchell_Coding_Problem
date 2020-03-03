@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Home</title>
+<style type="text/css">
+	body {
+    	text-align: center;
+	}
+
+	#searchform {
+		margin-right: 200px;
+        margin-left: 200px;
+        margin-top: 20px;
+    }
+</style>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+ 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script th:inline="javascript">
+	$(document).ready(function(){
+		 $("#message").fadeIn(1000).delay(3000).fadeOut(2000);
+		 
+		 $("#selectSearchField").on('change',function(){
+		 	
+		 	$selectValue=$("#selectSearchField option:selected").val();
+		 	$placeholder="Enter Vehicle "+$selectValue;
+		 	$searchUrl="searchBy"+$selectValue
+		 	$("#vehicleId").attr("placeholder",$placeholder);
+		 	$("#vehicleId").attr("name","vehicle"+$selectValue);
+		 	$("#searchform").attr("action",$searchUrl);
+		 	$('#vehicleId').val("");
+		 	if($selectValue==="Year" || $selectValue==="Id")
+		 	$("#vehicleId").attr("type","number");
+		 	else
+		 	$("#vehicleId").attr("type","text");
+		 });
+		 
+	});
+</script>
+</head>
+	<body>
+		<div style="text-align:center">
+		<br/>
+		<h3 style="text-align:center;">Vehicle Search</h3>
+		<br/>
+		<div id="container" style="text-align: center;padding-top: 10px;">
+			<div id="div2"  class="btn-group-vertical">
+				<button id ="registration" class="btn btn-outline-success"><a href="/newVehicle" style="color: indigo;">Add New Vehicle</a> </button>
+			</div>
+		</div>
+		<br/>
+			<form th:action="searchById" id="searchform">
+    			<div class="input-group mb-3">
+					<input type="number" name="vehicleId" id="vehicleId" class="form-control" placeholder="Enter Vehicle Id" autofocus>
+					<div class="input-group-append">
+						<select class="form-control" id="selectSearchField">
+						  <option value="Id" id="Id">Id</option>
+						  <option value="Make" id="Make">Make</option>
+						  <option value="Model" id="Model">Model</option>
+						  <option value="Year" id="Year">Year</option>
+						 </select>
+					</div>
+					<div class="input-group-append">
+			 			<input type="submit" value="Search" style="color: indigo;"  class="btn btn-outline-success">
+					</div>
+				</div>
+  			</form>
+  		<div id="message" th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"/>
+  		</div>
+</body>
+</html>
